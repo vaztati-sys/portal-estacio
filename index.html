@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Portal do Aluno — ESTÁCIO</title>
   <meta name="theme-color" content="#0033A0">
-  <link rel="manifest" href="./manifest.json?v=1">
+  <link rel="manifest" href="./manifest.json?v=2">
+  <link rel="preload" as="image" href="./estacio-logo.png">
+  <link rel="preload" as="image" href="./foto.jpg">
   <style>
     :root{--blue:#0033A0;--red:#E2231A;--gold:#A57C00;--bg:#0b1833;--panel:#0f2248;--line:#1c3470;--text:#eef3ff;--muted:#b8c7ea}
     :root[data-theme="light"]{--bg:#f3f7ff;--panel:#ffffff;--line:#e1e8f8;--text:#0b1833;--muted:#516089}
@@ -53,8 +55,8 @@
         <div class="avatar" style="background-image:url('foto.jpg')"></div>
         <div>
           <div class="name" style="font-weight:900">Jéssica Lopes de Souza</div>
-          <div class="muted">Marketing</div>
-          <div class="muted">CPF: 135.890.377-84 • Nasc.: 12/01/1991</div>
+          <div class="muted">Marketing — Graduação</div>
+          <div class="muted">CPF: 135.890.377-84 • Nasc.: 11/01/1991</div>
         </div>
       </div>
       <div class="grid-3">
@@ -93,10 +95,10 @@
 
     <section id="section-perfil" class="panel hidden">
       <h2>Perfil</h2>
-      <div class="idcard" style="margin-top:.25rem"><div class="avatar" style="background-image:url('foto.jpg')"></div><div><div class="name">Jéssica Lopes de Souza</div><div class="muted">Marketing</div></div></div>
+      <div class="idcard" style="margin-top:.25rem"><div class="avatar" style="background-image:url('foto.jpg')"></div><div><div class="name">Jéssica Lopes de Souza</div><div class="muted">Marketing — Graduação</div></div></div>
       <form id="perfil-form" class="profile-grid">
         <div><label>Nome</label><input id="pf-nome" type="text" value="Jéssica Lopes de Souza" required/></div>
-        <div><label>E‑mail</label><input id="pf-email" type="email" value="jessica.lopes@estacio.br" required/></div>
+        <div><label>E‑mail</label><input id="pf-email" type="email" value="aluno@exemplo.com" required/></div>
         <div><label>Matrícula</label><input id="pf-matricula" type="text" value="202209317336" disabled/></div>
         <div><label>CPF</label><input id="pf-cpf" type="text" value="135.890.377-84"/></div>
         <div><label>Data de Nascimento</label><input id="pf-nasc" type="text" value="11/01/1991"/></div>
@@ -109,15 +111,13 @@
 <script>
 (function(){
   'use strict';
-  // Util
   function qs(sel, root){ return (root||document).querySelector(sel); }
   function qsa(sel, root){ return Array.from((root||document).querySelectorAll(sel)); }
   function toBR(iso){ try{ var p=iso.split('-'); return p.length===3 ? (p[2]+'/'+p[1]+'/'+p[0]) : iso; }catch(e){ return iso; } }
 
-  // Dados (PLACEHOLDERS — troque pelos seus textos)
   window.DATA = {
     aluno: { nome: "Jéssica Lopes de Souza", matricula: "202209317336", cr: 8.6, creditos: 64,
-             email: "jessica.lopes@estacio.br", curso: "Marketing", turno: "Noite", campus: "Centro",
+             email: "aluno@exemplo.com", curso: "Marketing", turno: "Noite", campus: "Centro",
              cpf: "135.890.377-84", nasc: "11/01/1991" },
     disciplinas: [
       { codigo: "MKT1001", nome: "Comportamento do Consumidor", professor: "Profa. A. Martins", frequencia: "93%", media: 8.9 },
@@ -152,7 +152,6 @@
     ]
   };
 
-  // Render functions
   function renderResumo(){ qs("#lista-comunicados").innerHTML = DATA.comunicados.map(c=>`<li><strong>${toBR(c.data)}</strong> — ${c.titulo}</li>`).join(""); }
   function renderDisciplinas(){ qs("#tbody-disciplinas").innerHTML = DATA.disciplinas.map(d=>`<tr><td>${d.codigo}</td><td>${d.nome}</td><td>${d.professor}</td><td>${d.frequencia}</td><td>${d.media}</td></tr>`).join(""); }
   function renderEventos(){ qs("#lista-eventos").innerHTML = DATA.eventos.map(e=>`<li><strong>${toBR(e.data)}</strong> — ${e.titulo}</li>`).join(""); }
@@ -174,7 +173,6 @@
     }));
   }
 
-  // Navegação robusta
   function bindNav(){
     const sections = {
       resumo: qs("#section-resumo"),
@@ -198,13 +196,11 @@
     });
   }
 
-  // Impressos (simplificado)
   function buildDocHTML(title, logoPath, bodyHtml){
     return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${title}</title>
-    <style>:root{--blue:#0033A0;--red:#E2231A}body{font-family:Arial,Helvetica,sans-serif;margin:40px}
+    <style>:root{--blue:#0033A0}body{font-family:Arial,Helvetica,sans-serif;margin:40px}
     h1{font-size:20px}.head{display:flex;gap:12px;align-items:center;border-bottom:3px solid var(--blue);padding-bottom:10px;margin-bottom:14px}
-    img.logo{height:38px}.meta{color:#333;margin:6px 0 12px 0}.footer{margin-top:22px;padding-top:10px;border-top:2px solid var(--blue);display:flex;align-items:center;justify-content:space-between;color:#333}
-    .seal{border:2px solid var(--red);color:var(--red);border-radius:999px;padding:6px 10px;font-weight:700;letter-spacing:.6px;opacity:.9}</style></head>
+    img.logo{height:38px}.meta{color:#333;margin:6px 0 12px 0}.footer{margin-top:22px;padding-top:10px;border-top:2px solid var(--blue);display:flex;align-items:center;justify-content:space-between;color:#333}</style></head>
     <body><div class="head"><img class="logo" src="${logoPath}"/><h1>${title}</h1></div>${bodyHtml}<div class="footer"><div>Universidade Estácio de Sá</div></div></body></html>`;
   }
   function openDoc(html){
@@ -243,9 +239,7 @@
     if(e.target && e.target.id==='btn-historico-pdf'){ e.preventDefault(); openPrintable('historico'); }
   });
 
-  // Init seguro
   window.addEventListener('DOMContentLoaded', function(){
-    // tema
     qs('#btn-theme').addEventListener('click', function(){
       const c=document.documentElement.getAttribute('data-theme');
       document.documentElement.setAttribute('data-theme', c==='light'?'dark':'light');
@@ -254,13 +248,10 @@
     renderResumo();
   });
 })();
-</script>
 
-<script>
-// PWA (opcional)
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{
-    navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+    navigator.serviceWorker.register('./service-worker.js');
   });
 }
 </script>
